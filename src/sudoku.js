@@ -26,3 +26,20 @@ export function GridWorks(grid) {
   }
   return true;
 }
+
+export function BacktrackSudoku(grid) {
+  for (var i = 0; i < 81; i++) {
+    if (!grid[i]) {
+      for (var j = 1; j <= 9; j++){
+        grid[i] = j;
+        if (GridWorks(grid)) {
+          grid = BacktrackSudoku(grid);
+          break;
+        } else {
+          grid[i] = 0;
+        }
+      }
+    }
+  }
+  return grid;
+}
