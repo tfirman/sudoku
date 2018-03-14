@@ -37,7 +37,6 @@ export function BacktrackSudoku(grid) {
   grid.push(filled);
   BacktrackRecursive(grid);
   filled = grid.pop();
-  console.log(filled);
   return grid;
 }
 
@@ -49,6 +48,51 @@ export function BacktrackRecursive(grid) {
         if (GridWorks(grid)) {
           grid[81]++;
           grid = BacktrackRecursive(grid);
+          if (grid[81] == 81) {
+            break;
+          } else {
+            grid[81]--;
+          }
+        }
+      }
+      if (grid[81] != 81) {
+        grid[i] = 0;
+      }
+      break;
+    }
+  }
+  return grid;
+}
+
+export function CheckUniqueSolution(grid) {
+  var filled = 0;
+  var grid2 = [];
+  for (var i = 0; i < 81; i++) {
+    if (grid[i]) {
+      filled ++;
+    }
+    grid2.push(grid[i]);
+  }
+  grid.push(filled);
+  grid2.push(filled);
+  BacktrackRecursive(grid);
+  BacktrackRecursive2(grid2);
+  for (var j = 0; j < 81; j++) {
+    if (grid[j] != grid2[j]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function BacktrackRecursive2(grid) {
+  for (var i = 0; i < 81; i++) {
+    if (!grid[i]) {
+      for (var j = 9; j >= 1; j--){
+        grid[i] = j;
+        if (GridWorks(grid)) {
+          grid[81]++;
+          grid = BacktrackRecursive2(grid);
           if (grid[81] == 81) {
             break;
           } else {
