@@ -28,17 +28,38 @@ export function GridWorks(grid) {
 }
 
 export function BacktrackSudoku(grid) {
+  var filled = 0;
+  for (var i = 0; i < 81; i++) {
+    if (grid[i]) {
+      filled ++;
+    }
+  }
+  grid.push(filled);
+  BacktrackRecursive(grid);
+  filled = grid.pop();
+  console.log(filled);
+  return grid;
+}
+
+export function BacktrackRecursive(grid) {
   for (var i = 0; i < 81; i++) {
     if (!grid[i]) {
       for (var j = 1; j <= 9; j++){
         grid[i] = j;
         if (GridWorks(grid)) {
-          grid = BacktrackSudoku(grid);
-          break;
-        } else {
-          grid[i] = 0;
+          grid[81]++;
+          grid = BacktrackRecursive(grid);
+          if (grid[81] == 81) {
+            break;
+          } else {
+            grid[81]--;
+          }
         }
       }
+      if (grid[81] != 81) {
+        grid[i] = 0;
+      }
+      break;
     }
   }
   return grid;
